@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIODATA SISWA SMPN 15 TEGAL</title>
+
+<style>
+
+/* =====================================================
+   BACKGROUND HALAMAN
+===================================================== */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('https://file.data.kemendikdasmen.go.id/sekolahkita/20/2032/20329837-14.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    padding-top: 60px;
+    min-height: 100vh;
+}
+
+/* =====================================================
+   KOTAK LOGIN (SUDAH DIPERKECIL)
+===================================================== */
+.login-box {
+    background: rgba(240, 250, 255, 0.95);
+    width: 65%;
+    max-width: 650px;
+    padding: 30px;
+    border-radius: 30px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    border: 4px solid white;
+}
+
+.login-box h1 {
+    font-size: 32px;
+    color: #0059d6;
+    font-weight: 800;
+    margin-bottom: 3px;
+}
+
+.login-box h2 {
+    font-size: 20px;
+    color: #777;
+    margin-top: 0;
+}
+
+.login-box p {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.login-box select, 
+.login-box input {
+    width: 80%;
+    max-width: 380px;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 10px;
+    border: 2px solid #000;
+    font-size: 17px;
+}
+
+.login-box button {
+    margin-top: 16px;
+    padding: 10px 40px;
+    font-size: 22px;
+    background: #25ff00;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.login-box button:hover {
+    background: #1ed000;
+}
+
+/* =====================================================
+   BIODATA CONTAINER (SETELAH LOGIN)
+===================================================== */
+#biodata-container {
+    background-color: rgba(255, 255, 255, 0.95); 
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 900px;
+    margin-top: 30px;
+    display: none;
+}
+
+.siswa-card {
+    border: 1px solid #007bff;
+    border-left: 5px solid #007bff;
+    padding: 20px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    position: relative;
+}
+
+.data-item {
+    display: flex;
+    margin-bottom: 5px;
+    padding: 3px 0;
+    border-bottom: 1px dotted #dee2e6;
+}
+
+.data-label {
+    font-weight: bold;
+    width: 220px;
+    color: #343a40;
+}
+
+.add-button {
+    padding: 8px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* =====================================================
+   MODAL
+===================================================== */
+.modal {
+    display: none;
+    position: fixed; 
+    z-index: 100;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%; 
+    max-width: 600px;
+}
+
+.section-title {
+    background-color: #e9ecef;
+    padding: 10px;
+    margin: 15px 0;
+    border-left: 5px solid #007bff;
+    font-weight: bold;
+}
+
+</style>
+</head>
+<body>
+
+
+<!-- =====================================================
+     HALAMAN LOGIN
+===================================================== -->
+<div class="login-box" id="login-page">
+
+    <h1>BIODATA SISWA SMPN 15 TEGAL</h1>
+    <h2>Tahun Pelajaran 2025/2026</h2>
+
+    <p>Pilih Kelas dan Masukan kata sandi</p>
+
+    <select id="kelas-select">
+        <option value="" disabled selected>Pilih Kelas</option>
+        <option value="VII A">Kelas VII A</option>
+        <option value="VII B">Kelas VII B</option>
+        <option value="VII C">Kelas VII C</option>
+        <option value="VII D">Kelas VII D</option>
+        <option value="VIII C">Kelas VIII C</option>
+    </select>
+    <br>
+
+    <input type="password" id="password" placeholder="Kata Sandi">
+    <br>
+
+    <button onclick="login()">Login</button>
+    <p id="error-message" style="display:none; color:red; font-weight:bold;"></p>
+
+</div>
+
+
+<!-- =====================================================
+     HALAMAN BIODATA
+===================================================== -->
+<div id="biodata-container">
+    <h3 style="text-align:center; font-size:1.5em; color:#007bff;">
+        Daftar Siswa Kelas <span id="kelas-display"></span>
+    </h3>
+
+    <div class="action-buttons">
+        <button class="add-button" onclick="openAddModal()">➕ Tambah Data Siswa</button>
+    </div>
+
+    <div id="biodata-list-container"></div>
+</div>
+
+
+<!-- =====================================================
+     MODAL TAMBAH SISWA
+===================================================== -->
+<div id="addSiswaModal" class="modal">
+    <div class="modal-content">
+
+        <span onclick="closeAddModal()" style="float:right; cursor:pointer; font-size:25px;">&times;</span>
+
+        <h3 style="color:#007bff; text-align:center;">
+            Tambah Data Siswa Baru (Kelas <span id="modal-kelas-display"></span>)
+        </h3>
+
+        <form id="addSiswaForm">
+
+            <div class="section-title">Data Diri Siswa</div>
+
+            <input type="text" id="input_nama" placeholder="Nama Lengkap" required>
+            <input type="text" id="input_nisn" placeholder="NISN" required>
+            <input type="text" id="input_nik_siswa" placeholder="NIK Siswa" required>
+            <input type="text" id="input_tempat_lahir" placeholder="Tempat Lahir" required>
+            <input type="text" id="input_tanggal_lahir" placeholder="Tanggal Lahir" required>
+            <select id="input_jenis_kelamin" required>
+                <option value="" disabled selected>Jenis Kelamin</option>
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+            </select>
+            <input type="text" id="input_alamat" placeholder="Alamat" required>
+            <input type="tel" id="input_no_hp_siswa" placeholder="No. HP Siswa">
+            <input type="number" id="input_anak_ke" placeholder="Anak Ke-" required>
+            <input type="number" id="input_jumlah_saudara" placeholder="Jumlah Saudara" required>
+            <input type="text" id="input_hobi" placeholder="Hobi">
+            <input type="text" id="input_cita_cita" placeholder="Cita-Cita">
+            <input type="text" id="input_sekolah_asal" placeholder="Sekolah Asal" required>
+
+            <div class="section-title">Data Orang Tua</div>
+
+            <input type="text" id="input_ayah_nama" placeholder="Nama Ayah" required>
+            <input type="text" id="input_nik_ayah" placeholder="NIK Ayah" required>
+            <input type="text" id="input_ayah_pekerjaan" placeholder="Pekerjaan Ayah">
+            <input type="text" id="input_ayah_pendidikan" placeholder="Pendidikan Ayah">
+            <input type="text" id="input_ayah_penghasilan" placeholder="Penghasilan Ayah">
+            <input type="text" id="input_ibu_nama" placeholder="Nama Ibu" required>
+            <input type="text" id="input_nik_ibu" placeholder="NIK Ibu" required>
+            <input type="text" id="input_ibu_pekerjaan" placeholder="Pekerjaan Ibu">
+            <input type="text" id="input_ibu_pendidikan" placeholder="Pendidikan Ibu">
+            <input type="text" id="input_ibu_penghasilan" placeholder="Penghasilan Ibu">
+            <input type="tel" id="input_no_hp_ortu" placeholder="No. HP Orang Tua" required>
+
+            <button type="submit" style="background:#007bff; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer;">Simpan</button>
+        </form>
+    </div>
+</div>
+
+
+<script>
+
+/* =====================================================
+   DATA SISWA YANG DIGABUNGKAN
+===================================================== */
+let allSiswaData = [
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    { nama: "Budi Santoso", kelas: "VII A", absen: "32", nisn: "0098765432", nik_siswa: "3376051234567890", tempat_lahir: "Tegal", tanggal_lahir: "15 Januari 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567890", alamat: "Jl. Merdeka No. 10", anak_ke: 2, jumlah_saudara: 3, hobi: "Futsal", cita_cita: "Polisi", sekolah_asal: "SDN 10", ayah_nama: "Slamet", nik_ayah: "3376051234567891", ayah_pekerjaan: "Wiraswasta", ayah_pendidikan: "SMA", ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000", ibu_nama: "Rina", nik_ibu: "3376051234567892", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMP", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456789" },
+    
+    
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII B", absen: "32", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+
+
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII C", absen : "32", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+
+
+    { nama: "Andi Wijaya", kelas: "VII D", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII D", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII D", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII D", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII D", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII D", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII D", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII D", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII D", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII D", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII D", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII D", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII D", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    { nama: "Andi Wijaya", kelas: "VII D", nisn: "0098765434", nik_siswa: "3376051234567896", tempat_lahir: "Slawi", tanggal_lahir: "22 Mei 2012", jenis_kelamin: "Laki-laki", no_hp_siswa: "081234567892", alamat: "Jl. Garuda 12", anak_ke: 3, jumlah_saudara: 4, hobi: "Gaming", cita_cita: "Programmer", sekolah_asal: "SDN 02", ayah_nama: "Fajar", nik_ayah: "3376051234567897", ayah_pekerjaan: "Pedagang", ayah_pendidikan: "SMP", ayah_penghasilan: "Rp 3.000.000", ibu_nama: "Yuli", nik_ibu: "3376051234567898", ibu_pekerjaan: "IRT", ibu_pendidikan: "SMA", ibu_penghasilan: "Tidak Berpenghasilan", no_hp_ortu: "085123456792" },
+    
+
+
+    { nama: "Citra Dewi", kelas: "VIII C", nisn: "0087654321", nik_siswa: "3376051234567899", tempat_lahir: "Tegal", tanggal_lahir: "01 Maret 2011", jenis_kelamin: "Perempuan", no_hp_siswa: "081234567893", alamat: "Jl. Raya Dampyak", anak_ke: 1, jumlah_saudara: 2, hobi: "Menari", cita_cita: "Dokter", sekolah_asal: "SDN 08", ayah_nama: "Agus", nik_ayah: "3376051234567800", ayah_pekerjaan: "Tentara", ayah_pendidikan: "D3", ayah_penghasilan: "Rp 7.000.000", ibu_nama: "Sari", nik_ibu: "3376051234567801", ibu_pekerjaan: "Wiraswasta", ibu_pendidikan: "SMA", ibu_penghasilan: "Rp 3.000.000", no_hp_ortu: "085123456793" }
+];
+
+
+const PASSWORD_BENAR = "SPENLIBELS";
+let activeKelas = "";
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+function login() {
+    const selectedKelas = document.getElementById("kelas-select").value;
+    const password = document.getElementById("password").value;
+    const errorMessage = document.getElementById("error-message");
+
+    if (!selectedKelas) {
+        errorMessage.textContent = "Mohon pilih kelas terlebih dahulu.";
+        errorMessage.style.display = "block";
+        return;
+    }
+
+    if (password !== PASSWORD_BENAR) {
+        errorMessage.textContent = "Kata sandi salah!";
+        errorMessage.style.display = "block";
+        return;
+    }
+
+    activeKelas = selectedKelas;
+
+    document.getElementById("login-page").style.display = "none";
+    document.getElementById("biodata-container").style.display = "block";
+    errorMessage.style.display = "none";
+
+    document.getElementById("kelas-display").textContent = activeKelas;
+    tampilkanBiodataByKelas(activeKelas);
+}
+
+
+/* =====================================================
+   TAMPILKAN DATA BERDASARKAN KELAS
+===================================================== */
+function tampilkanBiodataByKelas(kelas) {
+    const container = document.getElementById("biodata-list-container");
+    container.innerHTML = "";
+
+    const siswaKelas = allSiswaData.filter(s => s.kelas === kelas);
+
+    if (siswaKelas.length === 0) {
+        container.innerHTML = `<p style="text-align:center; color:red;">Tidak ada data siswa.</p>`;
+        return;
+    }
+
+    siswaKelas.forEach(siswa => {
+        const card = document.createElement("div");
+        card.classList.add("siswa-card");
+
+        card.innerHTML = `
+            <h3>${siswa.nama} (NISN: ${siswa.nisn})</h3>
+            <button class="delete-button" onclick="deleteSiswa('${siswa.nisn}', '${siswa.nama}')">❌ Hapus</button>
+
+            <div class="section-title">Data Diri Siswa</div>
+
+            <div class="data-item"><span class="data-label">Kelas</span><span>${siswa.kelas}</span></div>
+            <div class="data-item"><span class="data-label">Absen</span><span>${siswa.absen}</span></div>
+            <div class="data-item"><span class="data-label">NIK</span><span>${siswa.nik_siswa}</span></div>
+            <div class="data-item"><span class="data-label">TTL</span><span>${siswa.tempat_lahir}, ${siswa.tanggal_lahir}</span></div>
+            <div class="data-item"><span class="data-label">Jenis Kelamin</span><span>${siswa.jenis_kelamin}</span></div>
+            <div class="data-item"><span class="data-label">Alamat</span><span>${siswa.alamat}</span></div>
+            <div class="data-item"><span class="data-label">No HP Siswa</span><span>${siswa.no_hp_siswa}</span></div>
+            <div class="data-item"><span class="data-label">Anak Ke</span><span>${siswa.anak_ke}</span></div>
+            <div class="data-item"><span class="data-label">Jumlah Saudara</span><span>${siswa.jumlah_saudara}</span></div>
+            <div class="data-item"><span class="data-label">Hobi</span><span>${siswa.hobi}</span></div>
+            <div class="data-item"><span class="data-label">Cita-Cita</span><span>${siswa.cita_cita}</span></div>
+            <div class="data-item"><span class="data-label">Sekolah Asal</span><span>${siswa.sekolah_asal}</span></div>
+
+            <div class="section-title">Data Orang Tua</div>
+
+            <div class="data-item"><span class="data-label">Nama Ayah</span><span>${siswa.ayah_nama}</span></div>
+            <div class="data-item"><span class="data-label">NIK Ayah</span><span>${siswa.nik_ayah}</span></div>
+            <div class="data-item"><span class="data-label">Pekerjaan Ayah</span><span>${siswa.ayah_pekerjaan}</span></div>
+            <div class="data-item"><span class="data-label">Pendidikan Ayah</span><span>${siswa.ayah_pendidikan}</span></div>
+            <div class="data-item"><span class="data-label">Penghasilan Ayah</span><span>${siswa.ayah_penghasilan}</span></div>
+
+            <div class="data-item"><span class="data-label">Nama Ibu</span><span>${siswa.ibu_nama}</span></div>
+            <div class="data-item"><span class="data-label">NIK Ibu</span><span>${siswa.nik_ibu}</span></div>
+            <div class="data-item"><span class="data-label">Pekerjaan Ibu</span><span>${siswa.ibu_pekerjaan}</span></div>
+            <div class="data-item"><span class="data-label">Pendidikan Ibu</span><span>${siswa.ibu_pendidikan}</span></div>
+            <div class="data-item"><span class="data-label">Penghasilan Ibu</span><span>${siswa.ibu_penghasilan}</span></div>
+
+            <div class="data-item"><span class="data-label">No HP Ortu</span><span>${siswa.no_hp_ortu}</span></div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+
+/* =====================================================
+   FUNGSI TAMBAH SISWA
+===================================================== */
+function openAddModal() {
+    document.getElementById("modal-kelas-display").textContent = activeKelas;
+    document.getElementById("addSiswaModal").style.display = "block";
+}
+
+function closeAddModal() {
+    document.getElementById("addSiswaModal").style.display = "none";
+}
+
+document.getElementById("addSiswaForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const newSiswa = {
+        nama: input_nama.value,
+        kelas: activeKelas,
+        nisn: input_nisn.value,
+        nik_siswa: input_nik_siswa.value,
+        tempat_lahir: input_tempat_lahir.value,
+        tanggal_lahir: input_tanggal_lahir.value,
+        jenis_kelamin: input_jenis_kelamin.value,
+        no_hp_siswa: input_no_hp_siswa.value,
+        alamat: input_alamat.value,
+        anak_ke: parseInt(input_anak_ke.value),
+        jumlah_saudara: parseInt(input_jumlah_saudara.value),
+        hobi: input_hobi.value,
+        cita_cita: input_cita_cita.value,
+        sekolah_asal: input_sekolah_asal.value,
+        ayah_nama: input_ayah_nama.value,
+        nik_ayah: input_nik_ayah.value,
+        ayah_pekerjaan: input_ayah_pekerjaan.value,
+        ayah_pendidikan: input_ayah_pendidikan.value,
+        ayah_penghasilan: input_ayah_penghasilan.value,
+        ibu_nama: input_ibu_nama.value,
+        nik_ibu: input_nik_ibu.value,
+        ibu_pekerjaan: input_ibu_pekerjaan.value,
+        ibu_pendidikan: input_ibu_pendidikan.value,
+        ibu_penghasilan: input_ibu_penghasilan.value,
+        no_hp_ortu: input_no_hp_ortu.value
+    };
+
+    const duplicate = allSiswaData.some(s => s.nisn === newSiswa.nisn);
+    if (duplicate) {
+        alert("NISN sudah ada. Gunakan NISN lain.");
+        return;
+    }
+
+    allSiswaData.push(newSiswa);
+    closeAddModal();
+    tampilkanBiodataByKelas(activeKelas);
+
+    alert("Data siswa berhasil ditambahkan.");
+});
+
+
+/* =====================================================
+   HAPUS SISWA
+===================================================== */
+function deleteSiswa(nisn, nama) {
+    if (!confirm(`Hapus data ${nama}?`)) return;
+
+    allSiswaData = allSiswaData.filter(s => s.nisn !== nisn);
+
+    tampilkanBiodataByKelas(activeKelas);
+    alert("Data berhasil dihapus.");
+}
+
+</script>
+</body>
+</html>

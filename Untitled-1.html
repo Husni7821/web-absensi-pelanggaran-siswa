@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIODATA SISWA SMPN 15 TEGAL</title>
+    <style>
+        /* Gaya CSS */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        h2 {
+            color: #555;
+            text-align: center;
+            margin-top: 0;
+            font-weight: normal;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        /* Gaya untuk Halaman Login */
+        #login-page {
+            text-align: center;
+        }
+
+        #login-page input[type="password"] {
+            padding: 10px;
+            margin-bottom: 15px;
+            width: 70%;
+            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        #login-page button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        #login-page button:hover {
+            background-color: #218838;
+        }
+
+        #error-message {
+            color: red;
+            margin-top: 10px;
+        }
+
+        /* Gaya untuk Halaman Biodata */
+        #biodata-page {
+            display: none; /* Sembunyikan secara default */
+        }
+
+        .section-title {
+            background-color: #e9ecef;
+            color: #333;
+            padding: 10px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            border-left: 5px solid #007bff;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .data-item {
+            display: flex;
+            margin-bottom: 10px;
+            padding: 5px 0;
+            border-bottom: 1px dotted #eee;
+        }
+
+        .data-label {
+            font-weight: bold;
+            width: 200px; /* Lebar label yang tetap */
+            color: #343a40;
+        }
+
+        .data-value {
+            flex-grow: 1;
+            color: #6c757d;
+        }
+
+        .data-group {
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>BIODATA SISWA SMPN 15 TEGAL</h1>
+        <h2>Tahun Pelajaran 2025/2026</h2>
+
+        <div id="login-page">
+            <p>Masukkan Kata Sandi untuk Melihat Data:</p>
+            <input type="password" id="password" placeholder="Kata Sandi">
+            <button onclick="login()">Login</button>
+            <p id="error-message" style="display: none;">Kata sandi salah. Silakan coba lagi.</p>
+        </div>
+
+        <div id="biodata-page">
+
+            <div class="data-group">
+                <div class="section-title">Data Diri Siswa</div>
+                <div class="data-item"><span class="data-label">Nama Siswa</span><span class="data-value" id="data-nama"></span></div>
+                <div class="data-item"><span class="data-label">NISN</span><span class="data-value" id="data-nisn"></span></div>
+                <div class="data-item"><span class="data-label">Kelas</span><span class="data-value" id="data-kelas"></span></div>
+                <div class="data-item"><span class="data-label">NIK</span><span class="data-value" id="data-nik"></span></div>
+                <div class="data-item"><span class="data-label">Tempat, Tanggal Lahir</span><span class="data-value" id="data-ttl"></span></div>
+                <div class="data-item"><span class="data-label">Jenis Kelamin</span><span class="data-value" id="data-jk"></span></div>
+                <div class="data-item"><span class="data-label">Alamat Siswa</span><span class="data-value" id="data-alamat"></span></div>
+                <div class="data-item"><span class="data-label">No. HP Siswa</span><span class="data-value" id="data-nohp-siswa"></span></div>
+                <div class="data-item"><span class="data-label">Anak Ke-</span><span class="data-value" id="data-anak-ke"></span></div>
+                <div class="data-item"><span class="data-label">Jumlah Saudara</span><span class="data-value" id="data-jml-saudara"></span></div>
+                <div class="data-item"><span class="data-label">Hobi</span><span class="data-value" id="data-hobi"></span></div>
+                <div class="data-item"><span class="data-label">Cita-Cita</span><span class="data-value" id="data-cita-cita"></span></div>
+                <div class="data-item"><span class="data-label">Sekolah Asal</span><span class="data-value" id="data-sekolah-asal"></span></div>
+            </div>
+
+            <div class="data-group">
+                <div class="section-title">Data Ayah</div>
+                <div class="data-item"><span class="data-label">Nama Ayah</span><span class="data-value" id="data-ayah-nama"></span></div>
+                <div class="data-item"><span class="data-label">Pekerjaan</span><span class="data-value" id="data-ayah-pekerjaan"></span></div>
+                <div class="data-item"><span class="data-label">Pendidikan Terakhir</span><span class="data-value" id="data-ayah-pendidikan"></span></div>
+                <div class="data-item"><span class="data-label">Penghasilan Per Bulan</span><span class="data-value" id="data-ayah-penghasilan"></span></div>
+            </div>
+
+            <div class="data-group">
+                <div class="section-title">Data Ibu</div>
+                <div class="data-item"><span class="data-label">Nama Ibu</span><span class="data-value" id="data-ibu-nama"></span></div>
+                <div class="data-item"><span class="data-label">Pekerjaan</span><span class="data-value" id="data-ibu-pekerjaan"></span></div>
+                <div class="data-item"><span class="data-label">Pendidikan Terakhir</span><span class="data-value" id="data-ibu-pendidikan"></span></div>
+                <div class="data-item"><span class="data-label">Penghasilan Per Bulan</span><span class="data-value" id="data-ibu-penghasilan"></span></div>
+            </div>
+
+            <div class="data-group">
+                <div class="section-title">Kontak Orang Tua</div>
+                <div class="data-item"><span class="data-label">No. HP Orang Tua</span><span class="data-value" id="data-nohp-ortu"></span></div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Data Siswa Contoh (Ganti dengan data siswa yang sebenarnya)
+        const siswaData = {
+            nama: "Budi Santoso",
+            nisn: "0098765432",
+            nik: "3376051234567890",
+            kelas: "VII A",
+            tempat_lahir: "Tegal",
+            tanggal_lahir: "15 Januari 2012",
+            jenis_kelamin: "Laki-laki",
+            no_hp_siswa: "081234567890",
+            alamat: "Jl. Merdeka No. 10, Kel. Mintaragen, Kec. Tegal Timur, Kota Tegal",
+            anak_ke: 2,
+            jumlah_saudara: 3, // Termasuk diri sendiri (jika anak ke-2 dari 3 bersaudara)
+            hobi: "Bermain Futsal",
+            cita_cita: "Polisi",
+            sekolah_asal: "SDN 10 Mintaragen",
+
+            ayah_nama: "Slamet Riyadi",
+            ayah_pekerjaan: "Wiraswasta",
+            ayah_pendidikan: "SMA",
+            ayah_penghasilan: "Rp 4.000.000 - Rp 5.000.000",
+
+            ibu_nama: "Rina Kartika",
+            ibu_pekerjaan: "Ibu Rumah Tangga",
+            ibu_pendidikan: "SMP",
+            ibu_penghasilan: "Tidak Berpenghasilan",
+
+            no_hp_ortu: "085123456789"
+        };
+
+        // Kata Sandi
+        const PASSWORD_BENAR = "SPENLIBELS";
+
+        // Fungsi Login
+        function login() {
+            const inputPassword = document.getElementById('password').value;
+            const loginPage = document.getElementById('login-page');
+            const biodataPage = document.getElementById('biodata-page');
+            const errorMessage = document.getElementById('error-message');
+
+            if (inputPassword === PASSWORD_BENAR) {
+                // Berhasil Login
+                loginPage.style.display = 'none';
+                biodataPage.style.display = 'block';
+                errorMessage.style.display = 'none';
+                tampilkanBiodata();
+            } else {
+                // Gagal Login
+                errorMessage.style.display = 'block';
+                document.getElementById('password').value = ''; // Kosongkan input
+            }
+        }
+
+        // Fungsi Menampilkan Biodata
+        function tampilkanBiodata() {
+            document.getElementById('data-nama').textContent = siswaData.nama;
+            document.getElementById('data-nisn').textContent = siswaData.nisn;
+            document.getElementById('data-nik').textContent = siswaData.nik;
+            document.getElementById('data-kelas').textContent = siswaData.kelas;
+            document.getElementById('data-ttl').textContent = `${siswaData.tempat_lahir}, ${siswaData.tanggal_lahir}`;
+            document.getElementById('data-jk').textContent = siswaData.jenis_kelamin;
+            document.getElementById('data-alamat').textContent = siswaData.alamat;
+            document.getElementById('data-nohp-siswa').textContent = siswaData.no_hp_siswa;
+            document.getElementById('data-anak-ke').textContent = siswaData.anak_ke;
+            document.getElementById('data-jml-saudara').textContent = siswaData.jumlah_saudara;
+            document.getElementById('data-hobi').textContent = siswaData.hobi;
+            document.getElementById('data-cita-cita').textContent = siswaData.cita_cita;
+            document.getElementById('data-sekolah-asal').textContent = siswaData.sekolah_asal;
+
+            document.getElementById('data-ayah-nama').textContent = siswaData.ayah_nama;
+            document.getElementById('data-ayah-pekerjaan').textContent = siswaData.ayah_pekerjaan;
+            document.getElementById('data-ayah-pendidikan').textContent = siswaData.ayah_pendidikan;
+            document.getElementById('data-ayah-penghasilan').textContent = siswaData.ayah_penghasilan;
+
+            document.getElementById('data-ibu-nama').textContent = siswaData.ibu_nama;
+            document.getElementById('data-ibu-pekerjaan').textContent = siswaData.ibu_pekerjaan;
+            document.getElementById('data-ibu-pendidikan').textContent = siswaData.ibu_pendidikan;
+            document.getElementById('data-ibu-penghasilan').textContent = siswaData.ibu_penghasilan;
+
+            document.getElementById('data-nohp-ortu').textContent = siswaData.no_hp_ortu;
+        }
+
+        // Menambahkan event listener agar bisa login dengan menekan 'Enter'
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+    </script>
+</body>
+</html>
